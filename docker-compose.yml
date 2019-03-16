@@ -1,0 +1,36 @@
+version: '3'
+services:
+  order-processor:
+    build: order-processor
+    ports:
+      - "8000:8000"
+    environment:
+      ZIPKIN_BASE_URL: http://zipkin:9411/
+  payment-gateway:
+    build: payment-gateway
+    ports:
+      - "8001:8001"
+    environment:
+      ZIPKIN_BASE_URL: http://zipkin:9411/
+  fulfillment-plan:
+    build: fulfillment-plan
+    ports:
+      - "8002:8002"
+    environment:
+      ZIPKIN_BASE_URL: http://zipkin:9411/
+  inventory-reservation:
+    build: inventory-reservation
+    ports:
+      - "8003:8003"
+    environment:
+      ZIPKIN_BASE_URL: http://zipkin:9411/
+  shipment:
+    build: shipment
+    ports:
+      - "8004:8004"
+    environment:
+      ZIPKIN_BASE_URL: http://zipkin:9411/
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
