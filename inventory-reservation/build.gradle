@@ -34,6 +34,9 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-undertow:${springBootVersion}"
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 	implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
+	compile "io.github.resilience4j:resilience4j-retry:0.13.2"
+	compile 'com.google.guava:guava:27.1-jre'
+
 }
 
 dependencyManagement {

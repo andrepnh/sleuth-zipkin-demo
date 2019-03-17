@@ -5,6 +5,10 @@
     </encoder>
   </appender>
 
+  <logger name="com.github.andrepnh.tracing" level="debug" additivity="false">
+    <appender-ref ref="STDOUT" />
+  </logger>
+
   <root level="INFO">
     <appender-ref ref="STDOUT" />
   </root>
