@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,10 +23,14 @@ public class Controller {
   }
 
   @GetMapping
-  public void process() {
+  public void process(
+      @RequestParam(value = "cancelReservation", defaultValue = "false") boolean cancel) {
     LOG.info("Processing request...");
     delayer.delay();
-
-    LOG.info("Done.");
+    if (cancel) {
+      LOG.warn("Reservation canceled");
+    } else {
+      LOG.info("Inventory reserved");
+    }
   }
 }

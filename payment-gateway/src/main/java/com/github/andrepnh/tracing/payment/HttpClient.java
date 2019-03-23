@@ -3,10 +3,14 @@ package com.github.andrepnh.tracing.payment;
 import com.google.common.collect.ImmutableMap;
 import io.github.resilience4j.retry.Retry;
 import java.util.function.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class HttpClient {
+  private static final Logger LOG = LoggerFactory.getLogger(HttpClient.class);
+
   private static final ImmutableMap<String, Integer> PORTS_PER_SERVICE = ImmutableMap
       .<String, Integer>builder()
       .put("order-processor", 8000)
@@ -25,7 +29,10 @@ public class HttpClient {
     var retry = Retry.ofDefaults(service);
     var url = String.format("http://localhost:%d/%s", PORTS_PER_SERVICE.get(service), service);
     Supplier<ResponseEntity<T>> networkCall = Retry
-        .decorateSupplier(retry, () -> template.getForEntity(url, responseClass));
+        .decorateSupplier(retry, () -> {
+          LOG.debug("Calling {}", url);
+          return template.getForEntity(url, responseClass);
+        });
     return retry.executeSupplier(networkCall);
   }
 

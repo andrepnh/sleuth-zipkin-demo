@@ -42,8 +42,9 @@ public class DelayInjection {
     this.maxDelayMs = (int) Math.round(
         (targetFailureRate * minDelayMs - readTimeoutMs) / (targetFailureRate - 1));
     this.minDelayMs = minDelayMs;
-    LOG.debug("Delaying anything between {} (inclusive) and {} (exclusive)",
-        minDelayMs, maxDelayMs);
+    LOG.debug("Delaying anything between {} (inclusive) and {} (exclusive). "
+            + "Based on timeout:{} and failure rate:{}",
+        minDelayMs, maxDelayMs, readTimeoutMs, targetFailureRate);
   }
 
   public void delay() {

@@ -1,4 +1,4 @@
-package com.github.andrepnh.tracing.order;
+package com.github.andrepnh.tracing.shipment;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
