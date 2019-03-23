@@ -11,9 +11,8 @@ public class HttpClient {
       .<String, Integer>builder()
       .put("order-processor", 8000)
       .put("payment-gateway", 8001)
-      .put("fulfillment-plan", 8002)
-      .put("inventory-service", 8003)
-      .put("shipment", 8004)
+      .put("inventory-reservation", 8002)
+      .put("shipment", 8003)
       .build();
 
   private final RestTemplate template;
