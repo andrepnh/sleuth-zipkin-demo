@@ -1,6 +1,0 @@
-graph LR
-    O(order-processor) --> P(payment-gateway)
-    O -->|Reserve| I(inventory-reservation)
-    P --> Py{Payment successful?}
-    Py -->|Yes| S(shipment)
-    Py -->|No, cancel reservation| I
