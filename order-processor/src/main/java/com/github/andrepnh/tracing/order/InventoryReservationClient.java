@@ -26,7 +26,6 @@ public class InventoryReservationClient {
     return CompletableFuture.completedFuture(responseEntity.getBody());
   }
 
-  @Async
   public CompletableFuture<Void> cancelReservation() {
     var queryParams = ImmutableMap.of("cancelReservation", "true");
     ResponseEntity<Void> responseEntity = client

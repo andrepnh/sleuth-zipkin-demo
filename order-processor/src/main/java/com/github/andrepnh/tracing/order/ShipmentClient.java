@@ -17,7 +17,6 @@ public class ShipmentClient {
     this.client = client;
   }
 
-  @Async
   public CompletableFuture<Void> ship() {
     ResponseEntity<Void> responseEntity = client.call("shipment", Void.class);
     LOG.info("Shipment {}: {}", responseEntity.getStatusCodeValue(), responseEntity.getBody());
