@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
-public class HttpClientConfiguration {
+@EnableAsync
+public class AppConfiguration {
   @Bean
   public HttpClient httpClient(
       @Value("${read.timeout.ms}") int readTimeoutMs,
