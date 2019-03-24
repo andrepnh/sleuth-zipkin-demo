@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/order-processor")
 public class Controller {
-  private static final Logger LOG = LoggerFactory.getLogger(PaymentGatewayClient.class);
+  private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
   private final DelayInjection delayer;
   private final PaymentGatewayClient paymentGatewayClient;

@@ -23,15 +23,18 @@ public class HttpClient {
 
   private final RestTemplate template;
 
-  public HttpClient(RestTemplate template) {
+  private final UrlSupplier urlSupplier;
+
+  public HttpClient(RestTemplate template, UrlSupplier urlSupplier) {
     this.template = template;
+    this.urlSupplier = urlSupplier;
   }
 
   public <T> ResponseEntity<T> call(String service, Class<T> responseClass) {
     var retry = Retry.ofDefaults(service);
-    var url = String.format("http://localhost:%d/%s", PORTS_PER_SERVICE.get(service), service);
     Supplier<ResponseEntity<T>> networkCall = Retry
         .decorateSupplier(retry, () -> {
+          var url = urlSupplier.get(service);
           LOG.debug("Calling {}", url);
           return template.getForEntity(url, responseClass);
         });
@@ -41,13 +44,9 @@ public class HttpClient {
   public <T> ResponseEntity<T> call(
       String service, Class<T> responseClass, Map<String, String> params) {
     var retry = Retry.ofDefaults(service);
-    var queryParams = params.entrySet().stream()
-        .map(entry -> String.format("%s=%s", entry.getKey(), entry.getValue()))
-        .collect(Collectors.joining("&"));
-    var url = String.format("http://localhost:%d/%s?%s",
-        PORTS_PER_SERVICE.get(service), service, queryParams);
     Supplier<ResponseEntity<T>> networkCall = Retry
         .decorateSupplier(retry, () -> {
+          var url = urlSupplier.get(service, params);
           LOG.debug("Calling {}", url);
           return template.getForEntity(url, responseClass);
         });

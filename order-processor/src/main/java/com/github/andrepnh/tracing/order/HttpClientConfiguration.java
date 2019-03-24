@@ -11,8 +11,10 @@ public class HttpClientConfiguration {
   @Bean
   public HttpClient httpClient(
       @Value("${read.timeout.ms}") int readTimeoutMs,
+      @Value("${use.service.based.urls}") boolean serviceBasedUrls,
       RestTemplateBuilder builder) {
     var restTemplate = builder.setReadTimeout(Duration.ofMillis(readTimeoutMs)).build();
-    return new HttpClient(restTemplate);
+    var urlSupplier = serviceBasedUrls ? new ServiceBasedUrlSupplier() : new LocalhostUrlSupplier();
+    return new HttpClient(restTemplate, urlSupplier);
   }
 }
