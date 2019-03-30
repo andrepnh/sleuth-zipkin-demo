@@ -26,12 +26,18 @@ public class InventoryReservationClient {
     return CompletableFuture.completedFuture(responseEntity.getBody());
   }
 
-  public CompletableFuture<Void> cancelReservation() {
+  public Void reserveInventorySync() {
+    ResponseEntity<Void> responseEntity = client.call("inventory-reservation", Void.class);
+    LOG.info("Reserve inventory {}: {}",
+        responseEntity.getStatusCodeValue(), responseEntity.getBody());
+    return null;
+  }
+
+  public void cancelReservation() {
     var queryParams = ImmutableMap.of("cancelReservation", "true");
     ResponseEntity<Void> responseEntity = client
         .call("inventory-reservation", Void.class, queryParams);
     LOG.info("Cancel reservation {}: {}",
         responseEntity.getStatusCodeValue(), responseEntity.getBody());
-    return CompletableFuture.completedFuture(responseEntity.getBody());
   }
 }

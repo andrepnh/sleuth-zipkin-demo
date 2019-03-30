@@ -23,4 +23,10 @@ public class PaymentGatewayClient {
     LOG.info("Got {}: {}", responseEntity.getStatusCodeValue(), responseEntity.getBody());
     return CompletableFuture.completedFuture(responseEntity.getBody());
   }
+
+  public Boolean processPaymentSync() {
+    ResponseEntity<Boolean> responseEntity = client.call("payment-gateway", Boolean.class);
+    LOG.info("Got {}: {}", responseEntity.getStatusCodeValue(), responseEntity.getBody());
+    return responseEntity.getBody();
+  }
 }

@@ -14,9 +14,11 @@ public class AppConfiguration {
   public HttpClient httpClient(
       @Value("${read.timeout.ms}") int readTimeoutMs,
       @Value("${use.service.based.urls}") boolean serviceBasedUrls,
+      @Value("${retry}") boolean retry,
+      @Value("${retry.interval.ms}") int retryIntervalMs,
       RestTemplateBuilder builder) {
     var restTemplate = builder.setReadTimeout(Duration.ofMillis(readTimeoutMs)).build();
     var urlSupplier = serviceBasedUrls ? new ServiceBasedUrlSupplier() : new LocalhostUrlSupplier();
-    return new HttpClient(restTemplate, urlSupplier);
+    return new HttpClient(restTemplate, urlSupplier, retry, retryIntervalMs);
   }
 }

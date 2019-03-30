@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,16 +32,25 @@ public class Controller {
   }
 
   @GetMapping
-  public void process() throws ExecutionException, InterruptedException {
-    LOG.info("Processing request...");
+  public void process(@RequestParam(value = "parallel", defaultValue = "false") boolean parallel)
+      throws ExecutionException, InterruptedException {
+    LOG.info("Processing request... (parallelly? {})", parallel);
     delayer.delay();
-    CompletableFuture<Boolean> paymentSuccessful = paymentGatewayClient.processPayment();
-    CompletableFuture<Void> inventoryReserved = inventoryReservationClient.reserveInventory();
+    CompletableFuture<Void> inventoryReserved = parallel
+        ? inventoryReservationClient.reserveInventory()
+        : CompletableFuture.completedFuture(inventoryReservationClient.reserveInventorySync());
+    CompletableFuture<Boolean> paymentSuccessful = parallel
+        ? paymentGatewayClient.processPayment()
+        : CompletableFuture.completedFuture(paymentGatewayClient.processPaymentSync());
     paymentSuccessful
-        .thenCombine(inventoryReserved, (success, nil) -> success
-            ? shipmentClient.ship()
-            : inventoryReservationClient.cancelReservation())
-        .get();
+        .thenCombine(inventoryReserved, (payed, nil) -> {
+          if (payed) {
+            shipmentClient.ship();
+          } else {
+            inventoryReservationClient.cancelReservation();
+          }
+          return null;
+        }).get();
     LOG.info("Done.");
   }
 }
