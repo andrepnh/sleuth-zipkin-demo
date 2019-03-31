@@ -1,5 +1,6 @@
 package com.github.andrepnh.tracing.shipment;
 
+import java.time.Duration;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
@@ -48,12 +49,19 @@ public class DelayInjection {
   }
 
   public void delay() {
-    int delay = RNG.nextInt(maxDelayMs - minDelayMs) + minDelayMs;
+    delay(RNG.nextInt(maxDelayMs - minDelayMs) + minDelayMs);
+  }
+
+  public void delay(int delay) {
     LOG.debug("Delaying for {}ms", delay);
     try {
       TimeUnit.MILLISECONDS.sleep(delay);
     } catch (InterruptedException e) {
       throw new IllegalStateException(e);
     }
+  }
+
+  public int nextDelayMs() {
+    return RNG.nextInt(maxDelayMs - minDelayMs) + minDelayMs;
   }
 }

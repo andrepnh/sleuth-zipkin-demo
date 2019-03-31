@@ -12,17 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
   private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
+  private final Service service;
   private final DelayInjection delayer;
 
   @Autowired
-  public Controller(DelayInjection delayer) {
+  public Controller(Service service, DelayInjection delayer) {
+    this.service = service;
     this.delayer = delayer;
   }
 
   @GetMapping
   public void process() {
     LOG.info("Processing request...");
-    delayer.delay();
+    int totalDelayMs = delayer.nextDelayMs();
+    delayer.delay(totalDelayMs / 4);
+    service.processShipment(totalDelayMs * 3 / 4);
     LOG.info("Done.");
   }
 }
