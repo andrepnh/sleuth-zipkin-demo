@@ -5,41 +5,44 @@ services:
     ports:
       - "8000:8000"
     environment:
-      ZIPKIN_BASE_URL: http://zipkin:9411/
-      ZIPKIN_SAMPLER_PERCENTAGE: 1.0
-      MIN_DELAY_MS: 20
-      READ_TIMEOUT_MS: 1000
-      FAILURE_RATE_TO_SIMULATE: 0.2
-      USE_SERVICE_BASED_URLS: "true"
-      RETRY: "false"
-      RETRY_INTERVAL_MS: 500
+      ZIPKIN_BASE_URL: ${ZIPKIN_BASE_URL}
+      ZIPKIN_SAMPLER_PERCENTAGE: ${ZIPKIN_SAMPLER_PERCENTAGE}
+      MIN_DELAY_MS: ${MIN_DELAY_MS}
+      READ_TIMEOUT_MS: ${READ_TIMEOUT_MS}
+      FAILURE_RATE_TO_SIMULATE: ${FAILURE_RATE_TO_SIMULATE}
+      USE_SERVICE_BASED_URLS: ${USE_SERVICE_BASED_URLS}
+      RETRY: ${RETRY}
+      RETRY_INTERVAL_MS: ${RETRY_INTERVAL_MS}
   payment-gateway:
     build: payment-gateway
     ports:
       - "8001:8001"
     environment:
-      ZIPKIN_BASE_URL: http://zipkin:9411/
-      MIN_DELAY_MS: 20
-      READ_TIMEOUT_MS: 1000
-      FAILURE_RATE_TO_SIMULATE: 0.2
+      ZIPKIN_BASE_URL: ${ZIPKIN_BASE_URL}
+      ZIPKIN_SAMPLER_PERCENTAGE: ${ZIPKIN_SAMPLER_PERCENTAGE}
+      MIN_DELAY_MS: ${MIN_DELAY_MS}
+      READ_TIMEOUT_MS: ${READ_TIMEOUT_MS}
+      FAILURE_RATE_TO_SIMULATE: ${FAILURE_RATE_TO_SIMULATE}
   inventory-reservation:
     build: inventory-reservation
     ports:
       - "8002:8002"
     environment:
-      ZIPKIN_BASE_URL: http://zipkin:9411/
-      MIN_DELAY_MS: 20
-      READ_TIMEOUT_MS: 1000
-      FAILURE_RATE_TO_SIMULATE: 0.2
+      ZIPKIN_BASE_URL: ${ZIPKIN_BASE_URL}
+      ZIPKIN_SAMPLER_PERCENTAGE: ${ZIPKIN_SAMPLER_PERCENTAGE}
+      MIN_DELAY_MS: ${MIN_DELAY_MS}
+      READ_TIMEOUT_MS: ${READ_TIMEOUT_MS}
+      FAILURE_RATE_TO_SIMULATE: ${FAILURE_RATE_TO_SIMULATE}
   shipment:
     build: shipment
     ports:
       - "8003:8003"
     environment:
-      ZIPKIN_BASE_URL: http://zipkin:9411/
-      MIN_DELAY_MS: 20
-      READ_TIMEOUT_MS: 1000
-      FAILURE_RATE_TO_SIMULATE: 0.2
+      ZIPKIN_BASE_URL: ${ZIPKIN_BASE_URL}
+      ZIPKIN_SAMPLER_PERCENTAGE: ${ZIPKIN_SAMPLER_PERCENTAGE}
+      MIN_DELAY_MS: ${MIN_DELAY_MS}
+      READ_TIMEOUT_MS: ${READ_TIMEOUT_MS}
+      FAILURE_RATE_TO_SIMULATE: ${FAILURE_RATE_TO_SIMULATE}
   zipkin:
     image: openzipkin/zipkin
     ports:

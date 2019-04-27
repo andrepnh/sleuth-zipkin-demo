@@ -22,7 +22,7 @@ readTimeoutMs=1000
 failureRate=0.2
 zipkinSamplerPercentage=1.0
 retry="true"
-retryIntervalMs=500
+retryIntervalMs=100
 # now enjoy the options in order and nicely split until we see --
 while true; do
     case "$1" in
@@ -69,7 +69,7 @@ fi
 
 function start-app {
     app=$1
-    ttab "echo -ne '\033]0;'$app'\007' && jenv-export-java-home && export ZIPKIN_BASE_URL=http://localhost:9411/ && export RETRY_INTERVAL_MS=$retryIntervalMs && export RETRY=$retry && export USE_SERVICE_BASED_URLS=false && export ZIPKIN_SAMPLER_PERCENTAGE=$zipkinSamplerPercentage && export MIN_DELAY_MS=$minDelayMs && export READ_TIMEOUT_MS=$readTimeoutMs && export FAILURE_RATE_TO_SIMULATE=$failureRate && cd $app && ./gradlew --no-daemon build && java -Xmx200m -jar ./build/libs/$app-0.0.1-SNAPSHOT.jar"
+    ttab "echo -ne '\033]0;'$app'\007' && export ZIPKIN_BASE_URL=http://localhost:9411/ && export RETRY_INTERVAL_MS=$retryIntervalMs && export RETRY=$retry && export USE_SERVICE_BASED_URLS=false && export ZIPKIN_SAMPLER_PERCENTAGE=$zipkinSamplerPercentage && export MIN_DELAY_MS=$minDelayMs && export READ_TIMEOUT_MS=$readTimeoutMs && export FAILURE_RATE_TO_SIMULATE=$failureRate && cd $app && ./gradlew --no-daemon build && java -Xmx200m -jar ./build/libs/$app-0.0.1-SNAPSHOT.jar"
 }
 
 for app in $apps; do

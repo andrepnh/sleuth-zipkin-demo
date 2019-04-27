@@ -1,6 +1,6 @@
 param([uint32] $minDelayMs = 20, [uint32] $readTimeoutMs = 1000, [double] $failureRate = 0.2,
     [double] $zipkinSamplerPercentage = 1.0,
-    [boolean] $retry = $false, [uint32] $retryIntervalMs = 500,
+    [boolean] $retry = $true, [uint32] $retryIntervalMs = 100,
     [string[]] $apps=@("zipkin","order-processor","payment-gateway","inventory-reservation","shipment"))
 
 function start-app($name) {
