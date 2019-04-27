@@ -34,7 +34,7 @@ $ ./run.sh
 Or to run outside docker on Windows:
 
 ```powershell
-> .\download-zipking.ps1
+> .\download-zipkin.ps1
 > .\run.ps1
 ```
 
